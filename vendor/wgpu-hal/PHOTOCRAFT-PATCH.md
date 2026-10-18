@@ -11,6 +11,15 @@ existing wgpu dependency graph.
 On the affected Windows system, `DXGI_SCALING_STRETCH` resamples the restored
 window's UI despite a sharp framebuffer. `DXGI_SCALING_NONE` prevents that
 extra resampling. The same root cause was measured in FigCraft issue #778.
+On a 2560×1440 Windows display, the patched PhotoCraft framebuffer and
+presented window matched in the sampled UI area at 100%, 125%, and 150%
+display scale, both restored and maximized and after six successive resizes.
 
-Remove this vendor copy when a released wgpu-hal includes the fix and
-PhotoCraft upgrades to it.
+Upstream tracking: https://github.com/gfx-rs/wgpu/issues/10196 discusses
+configurable swap-chain scaling, including the DX12 backend's hard-coded
+`DXGI_SCALING_STRETCH`. Its Vulkan symptom differs from PhotoCraft's DX12
+blur, so this issue tracks the scaling policy rather than a landed fix.
+
+Remove this vendor copy once a released wgpu-hal supports non-stretch DX12
+presentation (or exposes a scaling mode that PhotoCraft can select), and
+PhotoCraft has upgraded to and verified that release.
